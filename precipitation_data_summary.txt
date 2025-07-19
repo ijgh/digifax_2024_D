@@ -1,0 +1,44 @@
+降水数据集摘要
+==================================================
+
+全局属性:
+Title: IDW + PRISM: China gridded daily precipitation
+Institution: Data held at Beijing Normal University, China
+History: Last updated on 30-Apr-2023
+Time scale: 1961-01-01 to 2022-12-31
+Time resolution: daily
+Spatial extent: 18°N–54°N, 72°E–136°E
+Spatial resolution: 0.25° × 0.25°
+Contact: miaocy@bnu.edu.cn
+
+维度信息:
+longitude: 256
+latitude: 144
+years: 62
+time: 22645
+
+变量信息:
+
+longitude:
+维度: ('longitude',)
+形状: (256,)
+
+latitude:
+维度: ('latitude',)
+形状: (144,)
+
+years:
+维度: ('years',)
+形状: (62,)
+
+time:
+维度: ('time',)
+形状: (22645,)
+
+pre:
+维度: ('time', 'latitude', 'longitude')
+形状: (22645, 144, 256)
+
+station_number:
+维度: ('years', 'latitude', 'longitude')
+形状: (62, 144, 256)
