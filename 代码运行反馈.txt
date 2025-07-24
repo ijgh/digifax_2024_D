@@ -1,0 +1,237 @@
+================================================================================
+地形气候相互作用与极端天气形成关系分析
+================================================================================
+分析目标：量化地形因素与气候因素在极端降水形成中的相互作用
+数据范围：中国大陆地区，1990-2020年
+--------------------------------------------------------------------------------
+Found file in D:\digifax_2024D_date\dataset1\中国数字高程图(1km)\Geo\TIFF: chinadem_geo.tif
+Found file in D:\0.25rain(1961-2022): CHM_PRE_0.25dg_19612022.nc
+
+第一阶段：数据加载
+--------------------
+Loading DEM data...
+DEM data loaded - Shape: (5385, 10892), Valid pixels: 12328454
+Loading precipitation data (1990-2020)...
+Precipitation dataset variables: ['pre', 'station_number']
+Using precipitation variable: pre
+Precipitation data loaded - Shape: (11323, 144, 256)
+Loading temperature data (1990-2020)...
+Year 1990: Found 365 temperature files
+Year 1991: Found 365 temperature files
+Year 1992: Found 366 temperature files
+Year 1993: Found 365 temperature files
+Year 1994: Found 365 temperature files
+Year 1995: Found 365 temperature files
+Year 1996: Found 366 temperature files
+Year 1997: Found 365 temperature files
+Year 1998: Found 365 temperature files
+Year 1999: Found 365 temperature files
+Year 2000: Found 366 temperature files
+Year 2001: Found 365 temperature files
+Year 2002: Found 365 temperature files
+Year 2003: Found 365 temperature files
+Year 2004: Found 366 temperature files
+Year 2005: Found 365 temperature files
+Year 2006: Found 365 temperature files
+Year 2007: Found 365 temperature files
+Year 2008: Found 366 temperature files
+Year 2009: Found 365 temperature files
+Year 2010: Found 365 temperature files
+Year 2011: Found 365 temperature files
+Year 2012: Found 366 temperature files
+Year 2013: Found 365 temperature files
+Year 2014: Found 365 temperature files
+Year 2015: Found 365 temperature files
+Year 2016: Found 366 temperature files
+Year 2017: Found 365 temperature files
+Year 2018: Found 365 temperature files
+Temperature data loaded - Total files: 10592
+
+第二阶段：数据预处理
+-------------------------
+Resampling DEM data to 0.25° resolution...
+DEM resampling completed - New shape: (144, 252)
+
+第三阶段：特征计算
+---------------------------
+Calculating terrain features...
+Terrain feature calculation completed
+Calculating climate variables...
+Calculating annual temperature...
+Found temperature data for 29 years
+Selected 116 representative files
+Annual temperature calculation completed - Shape: (400, 700)
+Climate variable calculation completed
+
+第四阶段：数据整合
+------------------------
+正在整合数据到统一数据框...
+地形数据网格尺寸: 144 x 252 = 36288 个点
+基础数据长度: 36288
+正在匹配气候数据...
+气候数据匹配完成
+添加了年均温度数据
+DataFrame创建成功，形状: (36288, 18)
+清理数据框 - 输入形状: (36288, 18)
+数据基本统计:
+  lat: 36288/36288 (100.0%) 有效
+  lon: 36288/36288 (100.0%) 有效
+  elevation: 36288/36288 (100.0%) 有效
+  slope: 36288/36288 (100.0%) 有效
+  aspect: 36288/36288 (100.0%) 有效
+  aspect_class: 36288/36288 (100.0%) 有效
+  roughness: 36288/36288 (100.0%) 有效
+  tpi: 36288/36288 (100.0%) 有效
+  mean_annual_precip: 36288/36288 (100.0%) 有效
+  spring_ratio: 36288/36288 (100.0%) 有效
+  summer_ratio: 36288/36288 (100.0%) 有效
+  autumn_ratio: 36288/36288 (100.0%) 有效
+  winter_ratio: 36288/36288 (100.0%) 有效
+  precip_cv: 36288/36288 (100.0%) 有效
+  heavy_rain_days: 36288/36288 (100.0%) 有效
+  mean_annual_temp: 12647/36288 (34.9%) 有效
+  elev_x_precip: 36288/36288 (100.0%) 有效
+  slope_x_precip: 36288/36288 (100.0%) 有效
+移除完全无效的行...
+移除完全无效行后: 36288 行
+智能填充缺失值...
+  mean_annual_temp: 基于海拔估算填充了 23641 个缺失值
+移除极端异常值...
+  roughness: 发现 1754 个极端异常值
+  tpi: 发现 1267 个极端异常值
+  spring_ratio: 发现 166 个极端异常值
+  autumn_ratio: 发现 205 个极端异常值
+  precip_cv: 发现 504 个极端异常值
+  heavy_rain_days: 发现 731 个极端异常值
+  slope_x_precip: 发现 1380 个极端异常值
+数据清理完成: 36288 行 (保留率: 100.0%)
+数据整合完成 - 原始点数: 36288, 有效点数: 36288
+
+第五阶段：机器学习建模
+---------------------------------
+Available features: 13/13
+Building machine learning models...
+Data preprocessing - Original data points: 36288
+Data points after removing outliers: 31820
+Training Generalized Linear Model...
+Training Random Forest Model...
+Training XGBoost Model...
+
+Model Performance Summary:
+GLM: R² = 0.8057, MSE = 0.0507
+RandomForest: R² = 0.9424, MSE = 0.0150
+XGBoost: R² = 0.9392, MSE = 0.0158
+
+第六阶段：模型结果分析
+------------------------------
+Analyzing model results...
+相关性分析包含 14 个变量: ['elevation', 'slope', 'aspect_class', 'roughness', 'tpi', 'mean_annual_precip', 'spring_ratio', 'summer_ratio', 'autumn_ratio', 'winter_ratio', 'precip_cv', 'elev_x_precip', 'slope_x_precip', 'heavy_rain_days']
+相关性矩阵计算成功 - 形状: (14, 14)
+Model analysis completed
+
+第七阶段：结果可视化
+----------------------------
+Creating visualization charts...
+Saved chart: feature_importance.png
+海拔数据范围: 0.0 - 5208.0 m
+有效数据点数: 12186
+显示海拔范围: 500.0 - 5075.2 m
+显示数据点数: 8642
+Saved chart: elevation_vs_rain.png
+坡度数据范围: 0.0 - 90.0 degrees
+Saved chart: slope_vs_rain.png
+海拔分组范围: 500.0 - 4806.0 m
+海拔分组统计:
+  Medium Elevation
+(865-1637m): 3649 points
+  High Elevation
+(1637-4806m): 3040 points
+  Low Elevation
+(500-865m): 1466 points
+  Low Elevation
+(500-865m) 趋势线斜率: 0.0016
+  Medium Elevation
+(865-1637m) 趋势线斜率: 0.0008
+  High Elevation
+(1637-4806m) 趋势线斜率: 0.0002
+Saved chart: interaction_effect.png
+Saved chart: prediction_vs_actual.png
+相关性矩阵形状: (14, 14)
+相关性矩阵列: ['elevation', 'slope', 'aspect_class', 'roughness', 'tpi', 'mean_annual_precip', 'spring_ratio', 'summer_ratio', 'autumn_ratio', 'winter_ratio', 'precip_cv', 'elev_x_precip', 'slope_x_precip', 'heavy_rain_days']
+Saved chart: correlation_heatmap.png
+3D图使用 3000 个数据点
+3D图显示范围 - 海拔: 500-4787m, 坡度: 88.1-90.0°
+Saved chart: 3d_terrain_rain.png
+Visualization completed, saved 7 chart files
+
+第八阶段：结果总结与解释
+------------------------------------------
+
+============================================================
+分析结果总结
+============================================================
+
+1. 模型性能比较
+------------------------------
+  GLM         : R² = 0.8057, MSE =   0.0507
+  RandomForest: R² = 0.9424, MSE =   0.0150
+  XGBoost     : R² = 0.9392, MSE =   0.0158
+  最佳模型: RandomForest (R² = 0.9424)
+
+2. 重要特征分析 (基于XGBoost模型)
+--------------------------------------------------
+  mean_annual_precip  : Importance = 0.6377
+  elevation           : Importance = 0.1328
+  precip_cv           : Importance = 0.0582
+  slope_x_precip      : Importance = 0.0466
+  winter_ratio        : Importance = 0.0409
+
+3. 地形因素对暴雨的影响
+----------------------------------------
+  elevation           : Negative correlation (Coef=-0.000885, p-value=0.0000)
+  slope               : Negative correlation (Coef=-0.044517, p-value=0.0000)
+  aspect_class        : Positive correlation (Coef=0.013682, p-value=0.0000)
+  tpi                 : Negative correlation (Coef=-0.000114, p-value=0.0000)
+
+4. 气候因素对暴雨的影响
+----------------------------------------
+  mean_annual_precip  : Positive correlation (Coef=0.000159, p-value=0.0000)
+  spring_ratio        : Negative correlation (Coef=-1.376140, p-value=0.0038)
+  summer_ratio        : Positive correlation (Coef=1.224783, p-value=0.0000)
+  autumn_ratio        : Positive correlation (Coef=5.063693, p-value=0.0000)
+  winter_ratio        : Negative correlation (Coef=-5.194150, p-value=0.0000)
+  precip_cv           : Positive correlation (Coef=4.172391, p-value=0.0000)
+
+5. 地形与气候的交互作用
+--------------------------------
+  elev_x_precip  : 负向交互, 显著
+                     (Coef=-0.000000, p-value=0.0000)
+  slope_x_precip : 正向交互, 显著
+                     (Coef=0.000032, p-value=0.0000)
+
+6. 主要发现总结
+-----------------------
+  ✓ 最重要影响因子: mean_annual_precip (重要性: 0.638)
+  ✓ 相关性最强因子: mean_annual_precip (相关系数: 0.433)
+  ✓ 发现 2 个显著的地形-气候交互作用
+    - 高海拔抑制机制：高海拔地区可能通过低温等因素抑制极端降水
+    - 迎风坡效应：陡峭坡度与降水的协同作用增强暴雨形成
+
+7. 研究应用价值
+------------------------------
+  ✓ 量化了地形因素对极端降水的影响机制
+  ✓ 识别了地形-气候交互作用的关键因子
+  ✓ 为极端天气预报模型提供了重要参数
+  ✓ 支撑防灾减灾和水资源管理决策
+  ✓ 为气候变化适应策略提供科学依据
+
+================================================================================
+分析完成！
+================================================================================
+✓ 成功量化了地形与气候因素的相互作用关系
+✓ 识别了影响极端降水的关键地形和气候因子
+✓ 建立了多种机器学习预测模型
+✓ 生成了7个可视化图表文件
+✓ 为极端天气预报和防灾减灾提供了科学依据
+
+         
